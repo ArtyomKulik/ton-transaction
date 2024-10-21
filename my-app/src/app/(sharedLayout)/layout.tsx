@@ -12,8 +12,20 @@ export default function SharedLayout({ children }: { children: React.ReactNode }
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const [balance, setBalance] = useState<string | null>(null);
-  const pathname = usePathname();
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
 
+  useEffect(() => {
+    setIsWalletConnected(tonConnectUI.connected);
+
+    const unsubscribe = tonConnectUI.onStatusChange((walletInfo) => {
+      setIsWalletConnected(!!walletInfo);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [tonConnectUI]);
+  const pathname = usePathname();
 
   useEffect(() => {
     async function fetchBalance() {
@@ -39,9 +51,16 @@ export default function SharedLayout({ children }: { children: React.ReactNode }
     <>
       <header>
       <div className={styles.header_inner}>
-          <button className={styles.connectWalletButton} onClick={() => tonConnectUI.openSingleWalletModal('tonkeeper')}>
-            Connect Tonkeeper Wallet
-          </button>
+         {isWalletConnected ? (
+            <button className={styles.connectWalletButton} onClick={() => tonConnectUI.disconnect()}>Disconnect Wallet</button>
+          ) : (
+            <button 
+              className={styles.connectWalletButton} 
+              onClick={() => tonConnectUI.openSingleWalletModal('tonkeeper')}
+            >
+              Connect Tonkeeper Wallet
+            </button>
+          )}
           <p className={styles.balance}>Баланс: {balance || '0'} TON</p>
           <nav className={styles.nav}>
             {pathname === '/transactions' ? <Link href="/">Назад</Link> : <Link href="/transactions">Транзакции</Link>}

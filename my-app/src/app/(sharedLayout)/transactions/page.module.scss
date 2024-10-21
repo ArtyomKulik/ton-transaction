@@ -1,4 +1,7 @@
 
+.heading{
+    margin-bottom: 16px;
+}
 
 .transactionForm {
     margin-top: 16px;
@@ -58,17 +61,19 @@
     }
   }
 
+
   .notification {
     position: fixed;
-    top: 50%;
+    bottom: 20px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     padding: 10px 20px;
     background-color: red;
+    opacity: 0.5;
     color: white;
     border-radius: 4px;
     z-index: 1000;
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn;
     .red{
         color: red;
     }

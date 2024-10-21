@@ -25,7 +25,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning={true}>
       <TonConnectUIProvider manifestUrl="http://localhost:3000/tonconnect-manifest.json">
       <Container>
         {children}
